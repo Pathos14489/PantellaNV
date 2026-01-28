@@ -2,6 +2,7 @@
 > Bring Fallout New Vegas NPCs to life with AI
 
 <img src="./img/pantella_logo_github.png" align="left" alt="Pantella logo" width="150" height="auto">
+
 This repository is for the PantellaNV mod, which handles the FalloutNV-side logic of Pantella. For the main Pantella repository, see [here](https://github.com/Pathos14489/Pantella).
 
 The source code for the subtitles plugin can be found [here](https://github.com/swwu/Mantella-Subtitles-Plugin-NG).
