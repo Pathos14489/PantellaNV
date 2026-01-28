@@ -1,0 +1,18 @@
+scn PantellaClearActiveConversations
+
+begin Function {}
+    string_var trueString = "True"
+    int zeroValue = 0
+    set PantellaQuest.endConversation to trueString
+    set PantellaQuest.conversationWasHappening to trueString
+    set PantellaQuest.loopCount to zeroValue
+    WriteStringToFile "_pantella_text_input_enabled.txt" 0 "False"
+    WriteStringToFile "_pantella_character_selection.txt" 0 "True"
+    WriteStringToFile "_pantella_text_input.txt" 0 "EndConversationNow"
+    WriteStringToFile "_pantella_actor_count.txt" 0 $actorCountString
+    WriteStringToFile "_pantella_in_game_events.txt" 0 " "
+    WriteStringToFile "_pantella_end_conversation.txt" 0 "False"
+    WriteStringToFile "_pantella_removed_from_conversation.txt" 0 " "
+    WriteStringToFile "_pantella_status.txt" 0 "False"
+    StopQuest PantellaConversationActive
+end function

@@ -1,0 +1,16 @@
+scn PantellaAddToConversation
+
+int keyCode
+
+begin function {keyCode}
+    If MenuMode == 0 && GetQuestRunning PantellaConversationActive == 0 ; If not in a menu and not already in a conversation
+        string_var pantella_character_selection = ReadStringFromFile "_pantella_character_selection.txt"
+        if eval pantella_character_selection == "True"
+            Print "PantellaAddToConversation Ran..."
+            ref targetRef = GetCrosshairRef
+            if targetRef.IsActor
+                call PantellaAddActorToConversation targetRef Player
+            endif
+        endif
+    endif
+end function

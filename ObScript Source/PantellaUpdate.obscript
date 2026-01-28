@@ -1,0 +1,186 @@
+scn PantellaUpdate
+
+ref	targetRef
+ref starterRef
+
+begin Function {targetRef, starterRef}
+    string_var targetName = GetName targetRef
+    string_var starterName = GetName starterRef
+
+    Print "Updating conversation between " + $starterName + " and " + $targetName
+
+    float starterLightLevel = starterRef.GetActorLightAmount
+    string_var starterLightLevelString = $starterLightLevel
+    int starterIsInCombat = starterRef.IsInCombat 
+    string_var starterIsInCombatString = $starterIsInCombat
+    int starterIsTrespassing = starterRef.IsTrespassing
+    string_var starterIsTrespassingString = $starterIsTrespassing
+    ; TODO: GetTrespassWarningLevel
+    int starterIsAlerted = starterRef.GetIsAlerted
+    string_var starterIsAlertedString = $starterIsAlerted
+    int starterIsDetected = targetRef.GetDetected starterRef
+    string_var starterIsDetectedString = $starterIsDetected
+    ; TODO: GetCurrentAmmo, GetAmmoName
+    ; TODO: GetCurrentAmmoRounds
+    int isCannibalizingSomeone = 0
+    string_var playerIsStarter = "False"
+    int playerTeammateCount = GetPlayerTeammateCount
+    string_var playerTeammateCountString = $playerTeammateCount
+    int starterSleeping = -1
+    if starterRef == Player
+        let isCannibalizingSomeone := starterRef.GetCannibal
+        let playerIsStarter := "True"
+        ; TODO: GetMajorCrimeCount, GetMinorCrimeCount against target if starter is the player
+        ; TODO: GetActorFactionPlayerEnemy
+        ; TODO: GetPCUsingIronSights, GetPCUsingScope - Could be used to detect if the player is aiming at the target probably. Could be cool for immerseive hold ups.
+        ; TODO: GetSandman
+        let starterSleeping := IsPCSleeping
+    else ; Specifically not the player
+        let starterSleeping := starterRef.GetSleeping
+    endif
+    string_var starterSleepingString = $starterSleeping
+    string_var isCannibalizingSomeoneString = $isCannibalizingSomeone
+    int starterWasAttacked = starterRef.GetAttacked
+    string_var starterWasAttackedString = $starterWasAttacked
+    int starterIsAlarmed = starterRef.GetAlarmed
+    string_var starterIsAlarmedString = $starterIsAlarmed
+    int starterAgeClass = GetAgeClass starterRef
+    string_var starterAgeClassString = $starterAgeClass
+    float starterHeight = GetNPCHeight starterRef
+    string_var starterHeightString = $starterHeight
+    float starterWeight = GetNPCWeight starterRef
+    string_var starterWeightString = $starterWeight
+    ; TODO: GetObjectUnderFeet - Get what the player is standing on? lmao?
+    float starterRadiationLevel = starterRef.GetRadiationLevelAlt
+    string_var starterRadiationLevelString = $starterRadiationLevel
+    ; TODO: GetRestrained
+    int starterSitting = starterRef.GetSitting
+    string_var starterSittingString = $starterSitting
+
+    int AreInCombat = starterRef.IsInCombatWith targetRef
+    string_var AreInCombatString = $AreInCombat
+    int relationshipRank = targetRef.GetFactionRelation starterRef
+    string_var relationshipRankString = $relationshipRank
+    ; TODO: GetFriendHit - Detect how much the starter has attacked the target without entering combat
+    string_var sLocName = starterRef.GetLocationName
+    
+    float targetLightLevel = targetRef.GetActorLightAmount
+    string_var targetLightLevelString = $targetLightLevel
+    int targetIsTrespassing = targetRef.IsTrespassing
+    string_var targetIsTrespassingString = $targetIsTrespassing
+    ; TODO: GetTrespassWarningLevel
+    int targetIsInCombat = targetRef.IsInCombat 
+    string_var targetIsInCombatString = $targetIsInCombat
+    int targetIsUnconscious = targetRef.GetUnconscious
+    string_var targetIsUnconsciousString = $targetIsUnconscious
+    int targetIsIntimidated = targetRef.IsFleeing
+    string_var targetIsIntimidatedString = $targetIsIntimidated
+    int targetIsAlerted = targetRef.GetIsAlerted
+    string_var targetIsAlertedString = $targetIsAlerted
+    int targetIsTeammate = 0
+    if starterRef == Player
+        let targetIsTeammate := targetRef.GetPlayerTeammate
+    endif
+    string_var targetIsTeammateString = $targetIsTeammate
+    int targetIsDetected = starterRef.GetDetected targetRef
+    string_var targetIsDetectedString = $targetIsDetected
+    ; TODO: GetCurrentAmmo, GetAmmoName
+    ; TODO: GetCurrentAmmoRounds
+    int targetWasAttacked = targetRef.GetAttacked
+    string_var targetWasAttackedString = $targetWasAttacked
+    int targetIsAlarmed = targetRef.GetAlarmed
+    string_var targetIsAlarmedString = $targetIsAlarmed
+    int targetAgeClass = GetAgeClass targetRef
+    string_var targetAgeClassString = $targetAgeClass
+    float targetHeight = GetNPCHeight targetRef
+    string_var targetHeightString = $targetHeight
+    float targetWeight = GetNPCWeight targetRef
+    string_var targetWeightString = $targetWeight
+    ; TODO: GetObjectUnderFeet - Get what the target is standing on? lmao?
+    float targetRadiationLevel = targetRef.GetRadiationLevelAlt
+    string_var targetRadiationLevelString = $targetRadiationLevel
+    ; TODO: GetRestrained
+    int targetSitting = targetRef.GetSitting
+    string_var targetSittingString = $targetSitting
+    int targetSleeping = targetRef.GetSleeping
+    string_var targetSleepingString = $targetSleeping
+
+    short year = GameYear
+    short month = GameMonth
+    short day = GameDay
+    string_var yearString = $year
+    string_var monthString = $month
+    string_var dayString = $day
+    float currentTime = GetCurrentTime ; 13.25 = 1:15 PM
+    string_var currentTimeString = $currentTime
+    array_var currentTimeStringParts = Sv_Split $currentTimeString "."
+    string_var currentTimeHoursString = currentTimeStringParts[0]
+    string_var currentTimeMinutesString = "0." + $currentTimeStringParts[1]
+    int currentTimeHours = #currentTimeHoursString
+    float currentTimeMinutes = #currentTimeMinutesString
+    let currentTimeMinutes := 60 * (#currentTimeMinutes)
+    int currentTimeMinutesInt = #currentTimeMinutes
+    let currentTimeMinutesString := $currentTimeMinutesInt
+    string_var currentDateString = $yearString + "/" + $monthString + "/" + $dayString + " " + $currentTimeHoursString + ":" + $currentTimeMinutesString
+    
+    ; TODO: GetCurrentWeather
+    ; TODO: GetCurrentClimate
+    int dayOfTheWeek - GetDayOfWeek
+    string_var dayOfTheWeekString = $dayOfTheWeek
+    ; TODO: display current quest info in system prompt? GetActiveQuest
+    int moonPhase = GetMoonPhase
+    string_var moonPhaseString = $moonPhase
+    string_var PlayerKarma = GetPlayerKarmaTitle
+    ; TODO: GetSaveName
+    ; TODO: GetTimePlayed
+    ; TODO: GetWindDirection
+
+    ; TODO: When in a casino, get the winnings info using: GetCasinoWinnings, GetCasinoWinningsLevel, GetCasinoWinningStage
+
+    print "UpdateCurrentDate: " + $currentDateString
+
+    ; Export to filebuffers
+    WriteStringToFile "_pantella_player_is_starter.txt" 0 $playerIsStarter
+    WriteStringToFile "_pantella_player_teammate_count.txt" 0 $playerTeammateCountString
+    
+    WriteStringToFile "_pantella_current_location.txt" 0 $sLocName
+    WriteStringToFile "_pantella_starter_light_level.txt" 0 $starterLightLevelString ; TODO: fix to handle if the starter isn't the player later?
+    WriteStringToFile "_pantella_starter_in_combat.txt" 0 $starterIsInCombatString ; TODO: fix to handle if the starter isn't the player later?
+    WriteStringToFile "_pantella_starter_trespassing.txt" 0 $starterIsTrespassingString
+    WriteStringToFile "_pantella_starter_alerted.txt" 0 $starterIsAlertedString
+    WriteStringToFile "_pantella_starter_detected.txt" 0 $starterIsDetectedString
+    WriteStringToFile "_pantella_starter_is_cannibalizing_someone.txt" 0 $isCannibalizingSomeoneString
+    WriteStringToFile "_pantella_starter_was_attacked.txt" 0 $starterWasAttackedString
+    WriteStringToFile "_pantella_starter_alarmed.txt" 0 $starterIsAlarmedString
+    WriteStringToFile "_pantella_starter_age_class.txt" 0 $starterAgeClassString
+    WriteStringToFile "_pantella_starter_height.txt" 0 $starterHeightString
+    WriteStringToFile "_pantella_starter_weight.txt" 0 $starterWeightString
+    WriteStringToFile "_pantella_starter_radiation_level.txt" 0 $starterRadiationLevelString
+    WriteStringToFile "_pantella_starter_sitting.txt" 0 $starterSittingString
+    WriteStringToFile "_pantella_starter_sleeping.txt" 0 $starterSleepingString
+
+    WriteStringToFile "_pantella_are_in_combat.txt" 0 $AreInCombatString
+    WriteStringToFile "_pantella_relationship_rank.txt" 0 $relationshipRankString
+
+    WriteStringToFile "_pantella_target_light_level.txt" 0 $targetLightLevelString
+    WriteStringToFile "_pantella_target_trespassing.txt" 0 $targetIsTrespassingString
+    WriteStringToFile "_pantella_target_in_combat.txt" 0 $targetIsInCombatString
+    WriteStringToFile "_pantella_target_unconscious.txt" 0 $targetIsUnconsciousString
+    WriteStringToFile "_pantella_target_intimidated.txt" 0 $targetIsIntimidatedString
+    WriteStringToFile "_pantella_target_alerted.txt" 0 $targetIsAlertedString
+    WriteStringToFile "_pantella_target_is_teammate.txt" 0 $targetIsTeammateString
+    WriteStringToFile "_pantella_target_detected.txt" 0 $targetIsDetectedString
+    WriteStringToFile "_pantella_target_was_attacked.txt" 0 $targetWasAttackedString
+    WriteStringToFile "_pantella_target_alarmed.txt" 0 $targetIsAlarmedString
+    WriteStringToFile "_pantella_target_age_class.txt" 0 $targetAgeClassString
+    WriteStringToFile "_pantella_target_height.txt" 0 $targetHeightString
+    WriteStringToFile "_pantella_target_weight.txt" 0 $targetWeightString
+    WriteStringToFile "_pantella_target_radiation_level.txt" 0 $targetRadiationLevelString
+    WriteStringToFile "_pantella_target_sitting.txt" 0 $targetSittingString
+    WriteStringToFile "_pantella_target_sleeping.txt" 0 $targetSleepingString
+
+    WriteStringToFile "_pantella_current_time.txt" 0 $currentDateString
+    WriteStringToFile "_pantella_day_of_week.txt" 0 $dayOfTheWeekString
+    WriteStringToFile "_pantella_moon_phase.txt" 0 $moonPhaseString
+    WriteStringToFile "_pantella_player_karma.txt" 0 $PlayerKarmaString
+end

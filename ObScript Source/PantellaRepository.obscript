@@ -1,0 +1,202 @@
+scn PantellaRepository
+
+int loopCount
+int localMenuTimer
+string_var endConversation
+string_var sayFinalLine
+int conversationWasHappening
+
+ref targetRef
+ref starterRef
+ref tInfo
+
+Begin GameMode
+    if GetGameLoaded == 1 ; Initialization
+        Print "Pantella Listener Started..."
+        MessageEx "Pantella Initialized"
+        SetEventHandler "OnKeyDown:48" PantellaOpenTextMenu ; On B Key Pressed
+        SetEventHandler "OnKeyDown:35" PantellaAddToConversation ; On H Key Pressed
+        SetEventHandler "OnKeyDown:14" PantellaClearActiveConversationsOnKeypress ; On Backspace Key Pressed
+        
+        string_var playerName
+        string_var playerRace
+        string_var playerSexString
+
+        let playerName := GetName Player
+        let playerRace := GetRaceName Player
+        if GetPCIsSex Male
+            let playerSexString := "Male"
+        else
+            let playerSexString := "Female"
+        endif
+
+        Print "Player Name: " + $playerName + ", Race: " + $playerRace + ", Sex: " + $playerSexString
+
+        WriteStringToFile "_pantella_player_name.txt" 0 $playerName
+        WriteStringToFile "_pantella_player_race.txt" 0 $playerRace
+        WriteStringToFile "_pantella_player_sex.txt" 0 $playerSexString
+        WriteStringToFile "_pantella_text_input_enabled.txt" 0 "False"
+        WriteStringToFile "_pantella_in_game_events.txt" 0 " "
+        WriteStringToFile "_pantella_actor_count.txt" 0 "0"
+        WriteStringToFile "_pantella_character_selection.txt" 0 "True"
+        WriteStringToFile "_pantella_end_conversation.txt" 0 "False"
+        WriteStringToFile "_pantella_removed_from_conversation.txt" 0 " "
+        WriteStringToFile "_pantella_status.txt" 0 "False"
+
+        let conversationWasHappening := 0
+        let loopCount := 0
+        let localMenuTimer := 0
+        let endConversation := "False"
+        let sayFinalLine := "False"
+        ; array_var tInfos
+        ; let tInfos := TopicGetAllTopicInfos PantellaDialogueLine ; WHY DO YOU CRASH???
+
+        ; let tInfo := tInfos[0]["Value"]
+        let tInfo := GFFM "PantellaNV.esm" "0010A1"
+        call PantellaClearActiveConversations
+    else
+        if GetQuestRunning PantellaConversationActive
+            if eval endConversation == "False"
+                if conversationWasHappening == 0
+                    if starterRef && targetRef ; If both target and starter exist
+                        let conversationWasHappening := 1
+                    endif
+                endif
+                string_var starterName = GetName starterRef
+                string_var targetName = GetName targetRef
+                if starterRef && targetRef ; If both target and starter exist
+                    print "Active conversation participants found: " + $starterName + " and " + $targetName + " | Loop " + $loopCount + " | Local Menu Timer: " + $localMenuTimer
+                    string_var removedFromConversation = ReadStringFromFile "_pantella_removed_from_conversation.txt"
+                    array_var removedFromConversationArray = Sv_Split removedFromConversation "\n"
+                    array_var removedFromConversationEntry
+                    foreach removedFromConversationEntry <- removedFromConversationArray
+                        string_var removedFromConversationEntryString = removedFromConversationEntry["Value"]
+                        if eval removedFromConversationEntryString == targetName
+                            print $targetName + " has been removed from the conversation."
+                            string_var removeMessageString = $targetName + " has been removed from the conversation."
+                            MessageEx $removeMessageString
+                            let endConversation := "True" ; Does this cause a problem with multiNPC convos...?
+                            break
+                        endif
+                    loop
+                    int starterDead = starterRef.GetDead
+                    int targetDead = targetRef.GetDead
+                    if starterDead || targetDead ; End convo if either party dies
+                        if starterDead
+                            Print $starterName + " has died, ending conversation with " + $targetName + "."
+                        endif
+                        if targetDead
+                            Print $targetName + " has died, ending conversation with " + $starterName + "."
+                        endif
+                        let endConversation := "True"
+                    endif
+                    if IsPCSleeping ; End convo if player goes to sleep
+                        print "Player went to sleep, ending conversation."
+                        let endConversation := "True"
+                    endif
+                    
+                    string_var sayLine = ReadStringFromFile "_pantella_say_line_1.txt"
+                    if eval sayLine != "False"
+                        string_var speakingMessageString = $targetName + " is speaking."
+                        MessageEx $speakingMessageString
+                        print "Target is speaking: " + $sayLine
+                        TopicInfoSetNthResponseString tInfo 0 $sayLine
+                        if player == starterRef && tInfo ; Player conversations
+                            if targetRef.GetPlayerTeammate ; Teammates should walk and talk
+                                targetRef.Say PantellaDialogueLine 1 ; Followers don't have to stop and look at the player
+                                targetRef.Look starterRef ; SayTo will automatically look at the starter. Say won't.
+                            else ; Non-Teammate should stop and talk
+                                targetRef.SayTo starterRef PantellaDialogueLine 1 ; Non-followers should stop and look at the player when speaking so they don't walk off mid line
+                            endif
+                        else ; Non-player conversations shouldd always stop and talk (Is this a good idea??)
+                            targetRef.SayTo starterRef PantellaDialogueLine 1 ; Non-followers should stop and look at the player when speaking so they don't walk off mid line
+                            ; if !tInfo
+                            ;     let tInfo := targetRef.SayTo_GetTopicInfo
+                            ; endif
+                        endif
+                        WriteStringToFile "_pantella_say_line_1.txt" 0 "False" ; Set sayLine back to False once the voiceline has been triggered
+                        let localMenuTimer := localMenuTimer - 1
+                        ; Debug.Notification("Checking for actor methods")
+                        
+                        call PantellaUpdate targetRef, starterRef
+
+                        ; caster.SetLookAt(target) - Already handled by SayTo?
+                    endif
+                    
+                    if loopCount % 5 == 0
+                        string_var status = ReadStringFromFile "_pantella_status.txt"
+                        if eval status != "False" ; Python notification handling
+                            MessageEx $status
+                        endif
+
+                        string_var playerResponse = ReadStringFromFile "_pantella_text_input_enabled.txt"
+                        if eval playerResponse == "True" ; Python has told the game it's waiting for text input
+                            let localMenuTimer := 180
+                            if localMenuTimer >= 0
+                                string_var monitorPlayerResponse = ReadStringFromFile "_pantella_text_input_enabled.txt"
+                                string_var timerCheckEndConversation = ReadStringFromFile "_pantella_end_conversation.txt"
+                                if eval timerCheckEndConversation == "True" ; Might be !=? Original: timerCheckEndConversation || "true" || repository.endFlagMantellaConversationAll==true
+                                    let localMenuTimer = localMenuTimer - 1
+                                    WriteStringToFile "_pantella_say_line_1.txt" 0 "False"
+                                else
+                                    if eval monitorPlayerResponse == "False"
+                                        let localMenuTimer = localMenuTimer - 1
+                                    endif
+                                    if localMenuTimer > 0
+                                        ; ScriptWait 60 ; Wait 1 second
+                                        if MenuMode == 0
+                                            let localMenuTimer := localMenuTimer - 1
+                                        endif
+                                    else
+                                        let monitorPlayerResponse := "False"
+                                        let monitorPlayerResponse := ReadStringFromFile "_pantella_text_input_enabled.txt"
+                                        if eval monitorPlayerResponse == "True"
+                                            ; GetPlayerInput()
+                                            ShowTextInputMenu PantellaTextHandling 700 200 "Please type in your message content below:" 
+                                        endif
+                                        if MenuMode == 0
+                                            let localMenuTimer = localMenuTimer - 1
+                                        endif
+                                    endif
+                                endif
+                            endif ; ScriptWait 120 ; Wait 2 seconds
+                            print "Waiting for player response..."
+                            MessageEx "Waiting for player response..."
+                        endif ; if loopCount % 20 == 0 - Might not be necessary yet, but for radiant convos it will be, will decide later
+                    endif
+
+
+                    ScriptWait 10 ; Wait 1 second
+                    if eval sayFinalLine == "True"
+                        let endConversation := "True"
+                    endif
+                    let sayFinalLine := ReadStringFromFile "_pantella_end_conversation.txt"
+                endif
+            else ; If no conversation was happening
+                if conversationWasHappening == 1 ; If a conversation was previously happening
+                    Print "Conversation loop between " + $starterName + " and " + $targetName + " ended."
+                    string_var actorCountString = ReadStringFromFile "_pantella_actor_count.txt"
+                    int actorCount = #actorCountString
+                    let actorCount = actorCount - 1
+                    let actorCountString = $actorCount
+                    WriteStringToFile "_pantella_actor_count.txt" 0 $actorCountString
+                    let conversationWasHappening := 0
+                    let loopCount := 0
+                    WriteStringToFile "_pantella_text_input_enabled.txt" 0 "False"
+                    WriteStringToFile "_pantella_in_game_events.txt" 0 " "
+                    WriteStringToFile "_pantella_character_selection.txt" 0 "True"
+                    WriteStringToFile "_pantella_end_conversation.txt" 0 "False"
+                    WriteStringToFile "_pantella_removed_from_conversation.txt" 0 " "
+                    WriteStringToFile "_pantella_status.txt" 0 "False"
+                    StopQuest PantellaConversationActive
+                endif
+            endif
+        else
+            let conversationWasHappening := 0
+            let loopCount := 0
+            let localMenuTimer := 0
+            let endConversation := "False"
+            let sayFinalLine := "False"
+        endif
+    endif
+End

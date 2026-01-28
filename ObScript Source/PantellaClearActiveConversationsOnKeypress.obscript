@@ -1,0 +1,11 @@
+scn PantellaClearActiveConversationsOnKeypress
+
+int keyCode
+
+begin function {keyCode}
+    If MenuMode == 0 && GetQuestRunning PantellaConversationActive
+        Print "Clear Active Conversations"
+        MessageEx "Clearing Active Conversations..."
+        call PantellaClearActiveConversations
+    endif
+end function

@@ -1,0 +1,96 @@
+scn	PantellaAddActorToConversation
+
+ref	targetRef
+ref starterRef
+
+begin Function {targetRef, starterRef}
+    string_var pantella_character_selection = ReadStringFromFile "_pantella_character_selection.txt"
+    if eval pantella_character_selection == "True"
+        If MenuMode == 0 && GetQuestRunning PantellaConversationActive == 0 ; If not in a menu and not already in a conversation
+            Print "PantellaAddActorToConversation Ran..."
+
+            string_var playerName
+            string_var playerRace
+            string_var playerSexString
+
+            let playerName := GetName Player
+            let playerRace := GetRaceName Player
+            if GetPCIsSex Male
+                let playerSexString := "Male"
+            else
+                let playerSexString := "Female"
+            endif
+
+            Print "Player Name: " + $playerName + ", Race: " + $playerRace + ", Sex: " + $playerSexString
+
+            WriteStringToFile "_pantella_player_name.txt" 0 $playerName
+            WriteStringToFile "_pantella_player_race.txt" 0 $playerRace
+            WriteStringToFile "_pantella_player_sex.txt" 0 $playerSexString
+            
+            WriteStringToFile "_pantella_character_selection.txt" 0 "False"
+            string_var targetName = GetName targetRef
+            string_var starterName = GetName starterRef
+            string_var actorId = GetFormIDString targetRef
+            int actorFactionRelationship = targetRef.GetFactionRelation starterRef
+            string_var actorSexString
+            string_var actorRace
+            int creatureType = 8
+            if targetRef.GetIsCreature
+                let creatureType := targetRef.GetCreatureType
+            else
+                let actorRace := GetRaceName targetRef
+            endif
+            
+            if targetRef.GetIsSex Male
+                let actorSexString := "Male"
+            else
+                let actorSexString := "Female"
+            endif
+
+            ref baseForm = targetRef.GetBaseForm
+            string_var baseFormId = GetFormIDString baseForm
+            
+            ref actorVoiceType
+            string_var actorVoiceTypeIDStr
+            string_var actorVoiceTypeStr
+            string_var actorVoiceSring
+            let actorVoiceType := GetActorVoiceType baseForm
+            let actorVoiceTypeIDStr := GetFormIDString actorVoiceType
+            let actorVoiceTypeStr := GetEditorID actorVoiceType
+            let actorVoiceSring := "<" + $actorVoiceTypeStr + "> (" + $actorVoiceTypeIDStr + ")"
+
+            Print "Target Actor: " + $targetName + ", ID: " + $actorId + ", Faction Relationship: " + $actorFactionRelationship + ", Sex: " + $actorSexString + ", Race: " + $actorRace + ", Base Form ID: " + $baseFormId + ", Creature Type: " + $creatureType + ", actorVoiceType:" + $actorVoiceTypeStr 
+
+
+            string_var messageString = $starterName+" is starting a conversation with "+$targetName
+            MessageEx $messageString
+
+            string_var actorCountString = ReadStringFromFile "_pantella_actor_count.txt"
+            int actorCount = #actorCountString
+            let actorCount = actorCount + 1
+            let actorCountString = $actorCount
+            WriteStringToFile "_pantella_actor_count.txt" 0 $actorCountString
+            
+            ; Reset player input
+            WriteStringToFile "_pantella_text_input_enabled.txt" 0 "False"
+            WriteStringToFile "_pantella_text_input.txt" 0 " "
+            WriteStringToFile "_pantella_in_game_events.txt" 0 " "
+            
+            ; Communicate target data to file buffers
+            WriteStringToFile "_pantella_actor_voice.txt" 0 $actorVoiceSring
+            WriteStringToFile "_pantella_current_actor.txt" 0 $targetName
+            WriteStringToFile "_pantella_current_actor_ref_id.txt" 0 $actorId
+            WriteStringToFile "_pantella_current_actor_base_id.txt" 0 $baseFormId
+            WriteStringToFile "_pantella_current_actor_race.txt" 0 $actorRace
+            WriteStringToFile "_pantella_current_actor_gender.txt" 0 $actorSexString
+            string_var actorsString = " "+$targetName+" "
+            WriteStringToFile "_pantella_current_actors.txt" 1 $actorsString
+            ; targetRef.SayTo starterRef PantellaDialogueLine 1
+            call PantellaUpdate targetRef, starterRef
+
+            set PantellaQuest.starterRef to starterRef
+            set PantellaQuest.targetRef to targetRef
+            StartQuest PantellaConversationActive
+        endif
+    endif
+end function
