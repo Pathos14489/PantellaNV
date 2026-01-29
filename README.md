@@ -18,4 +18,4 @@ Doesn't currently support behaviors, multiNPC conversations or radiant conversat
 
 # How to Install
 
-I do not recommend manually installing the mod, instead please use the [launcher](https://github.com/Pathos14489/Pantella-Launcher). However if you must, all the scripts on this repo are precompiled, merely download by clcking the Code button, then Download ZIP. The zip downloaded will contain the mod plugin. Install it using your mod manager of choice.
+I do not recommend manually installing this mod, instead please use the [launcher](https://github.com/Pathos14489/Pantella-Launcher). However if you must, all the scripts on this repo are precompiled, merely download by clcking the Code button, then Download ZIP. The zip downloaded will contain the mod plugin. Install it using your mod manager of choice.
