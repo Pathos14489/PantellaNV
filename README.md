@@ -9,10 +9,10 @@ The source code for the subtitles plugin can be found [here](https://github.com/
 
 # Required Mods
 
-[xNVSE 6.4.4](https://github.com/xNVSE/NVSE/releases) or greater (might work with older versions, no idea really)
-[JIP LN NVSE Plugin](https://www.nexusmods.com/newvegas/mods/58277)
-[ShowOff xNVSE Plugin](https://www.nexusmods.com/newvegas/mods/72541)
-[JohnnyGuitar NVSE](https://www.nexusmods.com/newvegas/mods/66927)
+- [xNVSE 6.4.4](https://github.com/xNVSE/NVSE/releases) or greater (might work with older versions, no idea really)
+- [JIP LN NVSE Plugin](https://www.nexusmods.com/newvegas/mods/58277)
+- [ShowOff xNVSE Plugin](https://www.nexusmods.com/newvegas/mods/72541)
+- [JohnnyGuitar NVSE](https://www.nexusmods.com/newvegas/mods/66927)
 
 # How to Install
 
