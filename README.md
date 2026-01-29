@@ -7,6 +7,8 @@ This repository is for the PantellaNV mod, which handles the FalloutNV-side logi
 
 The source code for the subtitles plugin can be found [here](https://github.com/swwu/Mantella-Subtitles-Plugin-NG).
 
+Doesn't currently support behaviors, multiNPC conversations or radiant conversations. Just single NPC to player conversations.
+
 # Required Mods
 
 - [xNVSE 6.4.4](https://github.com/xNVSE/NVSE/releases) or greater (might work with older versions, no idea really)
