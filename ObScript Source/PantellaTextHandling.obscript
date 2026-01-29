@@ -3,8 +3,8 @@ scn	PantellaTextHandling
 string_var	sTextInput
 
 begin Function {sTextInput}
-	    Print "Player Said: " + $sTextInput
-	    WriteStringToFile "_pantella_text_input_enabled.txt" 0 "False"
-	    WriteStringToFile "_pantella_text_input.txt" 0 $sTextInput
+	Print "Player Said: " + $sTextInput
+	WriteStringToFile "_pantella_text_input_enabled.txt" 0 "False"
+	WriteStringToFile "_pantella_text_input.txt" 0 $sTextInput
 	sv_Destruct sTextInput
 end
