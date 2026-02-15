@@ -19,3 +19,17 @@ Doesn't currently support behaviors, multiNPC conversations or radiant conversat
 # How to Install
 
 I do not recommend manually installing this mod, instead please use the [launcher](https://github.com/Pathos14489/Pantella-Launcher). However if you must, all the scripts on this repo are precompiled, merely download by clcking the Code button, then Download ZIP. The zip downloaded will contain the mod plugin. Install it using your mod manager of choice.
+
+## INI Settings
+
+If you are setting this up following The Best of Times guide, part of the guide is the falloutcustom.ini changes they recommend. These settings are great, except they break Pantella support. To fix it, make sure that these settings are changed:
+```
+iAudioCacheSize=16384
+iMaxSizeForCachedSound=2048
+```
+to
+```
+iAudioCacheSize=0
+iMaxSizeForCachedSound=0
+```
+If you do not change these settings, the game will cache the voicelines when it first loads them, and it won't get the latest voicelines that get generated because it'll be using the cached version.
