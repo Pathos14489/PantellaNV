@@ -1,0 +1,12 @@
+scn PantellaOpenTextMenu
+
+int keyCode
+
+begin function {keyCode}
+    If MenuMode == 0
+        string_var playerResponse = ReadStringFromFile "_pantella_text_input_enabled.txt"
+        if eval playerResponse == "True"
+            ShowTextInputMenu PantellaTextHandling 700 200 "Please type in your message content below:" 
+        endif
+    endif
+end function
