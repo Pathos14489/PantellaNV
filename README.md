@@ -15,11 +15,15 @@ Doesn't currently support behaviors, multiNPC conversations or radiant conversat
 - [JIP LN NVSE Plugin](https://www.nexusmods.com/newvegas/mods/58277)
 - [ShowOff xNVSE Plugin](https://www.nexusmods.com/newvegas/mods/72541)
 - [JohnnyGuitar NVSE](https://www.nexusmods.com/newvegas/mods/66927)
-- [Tale of Two Wastelands 3.4](https://thebestoftimes.moddinglinked.com/index.html) (temporarily required until I can build a plugin just for NV without TTW)
+
+# Supported Mods
+- [Tale of Two Wastelands 3.4](https://thebestoftimes.moddinglinked.com/index.html) - Includes character cards and a seperate plugin for TTW support. If you are using TTW, make sure to enable the TTW version of the plugin, not the FNV version and set ttw_enabled to true in the backend when it asks you to during first time setup, or by changing the setting in the falloutnv_config.json file in the configs directory.
 
 # How to Install
 
-I do not recommend manually installing this mod, instead please use the [launcher](https://github.com/Pathos14489/Pantella-Launcher). However if you must, all the scripts on this repo are precompiled, merely download by clcking the Code button, then Download ZIP. The zip downloaded will contain the mod plugin. Install it using your mod manager of choice.
+1. I do not recommend manually installing this mod, instead please use the [launcher](https://github.com/Pathos14489/Pantella-Launcher). However if you must, all the scripts on this repo are precompiled, merely download by clcking the Code button, then Download ZIP. The zip downloaded will contain the mod plugin. Install it using your mod manager of choice.
+2. Enable the plugin in your mod manager. If you are using TTW, make sure to enable the TTW version of the plugin, not the FNV version.
+3. When first starting a save you intend to use Pantella in, please create your character, save and then load your save to finish the initialization for that save. You will need to do this for every save you want to use Pantella in, but only once per save unless you use the console to change your character race or name. In which case, please redo this process after you have finished changing your character. After that, you can just load the save and start playing.
 
 ## INI Settings
 
