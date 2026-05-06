@@ -15,6 +15,7 @@ Doesn't currently support behaviors, multiNPC conversations or radiant conversat
 - [JIP LN NVSE Plugin](https://www.nexusmods.com/newvegas/mods/58277)
 - [ShowOff xNVSE Plugin](https://www.nexusmods.com/newvegas/mods/72541)
 - [JohnnyGuitar NVSE](https://www.nexusmods.com/newvegas/mods/66927)
+- [Tale of Two Wastelands 3.4](https://thebestoftimes.moddinglinked.com/index.html) (temporarily required until I can build a plugin just for NV without TTW)
 
 # How to Install
 
