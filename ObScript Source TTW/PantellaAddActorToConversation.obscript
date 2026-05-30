@@ -9,6 +9,13 @@ begin Function {targetRef, starterRef}
         If MenuMode == 0 && GetQuestRunning PantellaConversationActive == 0 ; If not in a menu and not already in a conversation
             Print "PantellaAddActorToConversation Ran..."
 
+            string_var backendState = ReadStringFromFile "_pantella_backend_state.txt"
+            if eval backendState != "idle"
+                print "Pantella Backend in non-idle state on conversation start. Please restart the backend to ensure proper functionality. Attempting to send end conversation signal to backend to reset state without restart..."
+                WriteStringToFile "_pantella_end_conversation.txt" 0 "True"
+                MessageEx "Please try again in a few seconds, if this issue persists, restart the Pantella backend."
+            endif
+
             string_var playerName
             string_var playerRace
             string_var playerSexString

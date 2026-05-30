@@ -51,6 +51,11 @@ Begin GameMode
         
         let tInfo := GFFM "PantellaNV.esm" "000E03"
         call PantellaClearActiveConversations
+        string_var backendState = ReadStringFromFile "_pantella_backend_state.txt"
+        if eval backendState != "idle"
+            print "Pantella Backend in non-idle state on game load. Please restart the backend to ensure proper functionality."
+            MessageEx "Pantella backend desynced, please restart the backend!"
+        endif
     else
         if GetQuestRunning PantellaConversationActive
             if eval endConversation == "False"
@@ -63,6 +68,14 @@ Begin GameMode
                 string_var targetName = GetName targetRef
                 if starterRef && targetRef ; If both target and starter exist
                     print "Active conversation participants found: " + $starterName + " and " + $targetName + " | Loop " + $loopCount + " | Local Menu Timer: " + $localMenuTimer
+                    string_var backendState = ReadStringFromFile "_pantella_backend_state.txt"
+                    if eval backendState == "idle"
+                        if loopCount > 5
+                            print "Pantella Backend State: Idle - No/Lost active conversation, ending conversation loop."
+                            MessageEx "Pantella backend went idle, ending conversation loop."
+                            let endConversation := "True"
+                        endif
+                    endif
                     string_var removedFromConversation = ReadStringFromFile "_pantella_removed_from_conversation.txt"
                     array_var removedFromConversationArray = Sv_Split removedFromConversation "\n"
                     array_var removedFromConversationEntry
@@ -168,6 +181,7 @@ Begin GameMode
                         let endConversation := "True"
                     endif
                     let sayFinalLine := ReadStringFromFile "_pantella_end_conversation.txt"
+                    let loopCount := loopCount + 1
                 endif
             else ; If no conversation was happening
                 if conversationWasHappening == 1 ; If a conversation was previously happening
