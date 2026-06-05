@@ -109,7 +109,9 @@ Begin GameMode
                         let endConversation := "True"
                     endif
                     
-                    string_var sayLine = ReadStringFromFile "_pantella_say_line_1.txt"
+                    string_var actorCountString = ReadStringFromFile "_pantella_actor_count.txt"
+                    string_var sayLineFilename = "_pantella_say_line_" + $actorCountString + ".txt"
+                    string_var sayLine = ReadStringFromFile $sayLineFilename
                     if eval sayLine != "False"
                         string_var speakingMessageString = $targetName + " is speaking."
                         MessageEx $speakingMessageString
@@ -128,12 +130,11 @@ Begin GameMode
                             ;     let tInfo := targetRef.SayTo_GetTopicInfo
                             ; endif
                         endif
-                        WriteStringToFile "_pantella_say_line_1.txt" 0 "False" ; Set sayLine back to False once the voiceline has been triggered
+                        WriteStringToFile $sayLineFilename 0 "False" ; Set sayLine back to False once the voiceline has been triggered
                         let localMenuTimer := localMenuTimer - 1
                         ; Debug.Notification("Checking for actor methods")
                         
                         call PantellaUpdate targetRef, starterRef
-
                         ; caster.SetLookAt(target) - Already handled by SayTo?
                     endif
                     
@@ -151,7 +152,7 @@ Begin GameMode
                                 string_var timerCheckEndConversation = ReadStringFromFile "_pantella_end_conversation.txt"
                                 if eval timerCheckEndConversation == "True" ; Might be !=? Original: timerCheckEndConversation || "true" || repository.endFlagMantellaConversationAll==true
                                     let localMenuTimer = localMenuTimer - 1
-                                    WriteStringToFile "_pantella_say_line_1.txt" 0 "False"
+                                    WriteStringToFile $sayLineFilename 0 "False"
                                 else
                                     if eval monitorPlayerResponse == "False"
                                         let localMenuTimer = localMenuTimer - 1
