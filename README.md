@@ -19,7 +19,7 @@ Doesn't currently support behaviors, multiNPC conversations or radiant conversat
 # Supported Mods
 - [Tale of Two Wastelands 3.4](https://thebestoftimes.moddinglinked.com/index.html) - Includes character cards and a seperate plugin for TTW support. If you are using TTW, make sure to enable the TTW version of the plugin, not the FNV version and set ttw_enabled to true in the backend when it asks you to during first time setup, or by changing the setting in the falloutnv_config.json file in the configs directory.
 
-# How to Install - Lauuncher (Recommended)
+# How to Install - Launcher (Recommended fr Windows)
 
 1. This guide presumes that you're following the launcher installation guide and you were directed here from the launcher guide. If you were not, I recommend following the launcher installation guide instead of the manual installation guide, which can be found [here](https://github.com/Pathos14489/Pantella).
 2. Install the required mods listed above in your mod manager of choice and enable them. If you're installing TTW, this is where you would install it as well.
@@ -32,14 +32,19 @@ If you do not change these settings, the game will cache the voicelines when it 
 4. Follow the rest of the launcher installation guide to install the PantellaNV plugin and set up the backend.
 5. When first starting a save you intend to use Pantella in, please create your character, save and then load your save to finish the initialization for that save. You will need to do this for every save you want to use Pantella in, but only once per save unless you use the console to change your character race or name. In which case, please redo this process after you have finished changing your character. After that, you can just load the save and start playing.
 
-# How to Install - Manual
+# How to Install - Manual (Recommended for Linux)
 
-1. I do not recommend manually installing this mod, instead please use the [launcher](https://github.com/Pathos14489/Pantella-Launcher). However if you must, all the scripts on this repo are precompiled, merely download by clcking the Code button, then Download ZIP. The zip downloaded will contain the mod plugin. Install it using your mod manager of choice.
+1. All the scripts on this repo are precompiled. Download by clicking the Code button, then Download ZIP. The zip downloaded will contain the mod plugin. Install it using your mod manager of choice.
 2. Install the required mods listed above in your mod manager of choice.
 3. Make sure the following INI settings are set in your falloutcustom.ini file:
 ```
 iAudioCacheSize=0
 iMaxSizeForCachedSound=0
 ```
+If you do not change these settings, the game will cache the voicelines when it first loads them, and it won't get the latest voicelines that get generated because it'll be using the cached version.
 4. Enable the plugin in your mod manager. If you are using TTW, make sure to enable the TTW version of the plugin, not the FNV version.
 5. When first starting a save you intend to use Pantella in, please create your character, save and then load your save to finish the initialization for that save. You will need to do this for every save you want to use Pantella in, but only once per save unless you use the console to change your character race or name. In which case, please redo this process after you have finished changing your character. After that, you can just load the save and start playing.
+# Controls
+H - Adds an NPC to the conversation. Currently only single NPC to player conversations are supported.
+B - Opens the text input menu
+Backspace - Ends all ongoing conversations. Use this if you want to end a conversation early or if an NPC gets stuck in a conversation loop or if the Pantella backend crashes and you want to end the conversation without reloading your save.
