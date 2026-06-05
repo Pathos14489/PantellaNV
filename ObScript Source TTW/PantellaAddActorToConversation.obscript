@@ -44,6 +44,25 @@ begin Function {targetRef, starterRef}
             int creatureType = 8
             if targetRef.GetIsCreature
                 let creatureType := targetRef.GetCreatureType
+                if creatureType == 0
+                    let actorRace := "Animal"
+                elseif creatureType == 1
+                    let actorRace := "Mutated Animal"
+                elseif creatureType == 2
+                    let actorRace := "Mutated Insect"
+                elseif creatureType == 3
+                    let actorRace := "Abomination"
+                elseif creatureType == 4
+                    let actorRace := "Supermutant"
+                elseif creatureType == 5
+                    let actorRace := "Feral Ghoul"
+                elseif creatureType == 6
+                    let actorRace := "Robot"
+                elseif creatureType == 7
+                    let actorRace := "Giant"
+                else
+                    let actorRace := "Unknown Creature Type"
+                endif
             else
                 let actorRace := GetRaceName targetRef
             endif
