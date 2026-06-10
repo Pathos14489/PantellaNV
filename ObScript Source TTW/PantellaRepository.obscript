@@ -14,9 +14,6 @@ Begin GameMode
     if GetGameLoaded == 1 ; Initialization
         Print "Pantella Listener Started..."
         MessageEx "Pantella Initialized"
-        SetEventHandler "OnKeyDown:48" PantellaOpenTextMenu ; On B Key Pressed
-        SetEventHandler "OnKeyDown:35" PantellaAddToConversation ; On H Key Pressed
-        SetEventHandler "OnKeyDown:14" PantellaClearActiveConversationsOnKeypress ; On Backspace Key Pressed
         
         string_var playerName
         string_var playerRace
