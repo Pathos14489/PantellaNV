@@ -16,6 +16,9 @@ Doesn't currently support behaviors, multiNPC conversations or radiant conversat
 - [ShowOff xNVSE Plugin](https://www.nexusmods.com/newvegas/mods/72541)
 - [JohnnyGuitar NVSE](https://www.nexusmods.com/newvegas/mods/66927)
 
+# Recommended Mods (Not required but adds functionality)
+- [The Mod Configuration Menu](https://www.nexusmods.com/newvegas/mods/42507) - Adds an MCM menu for configuring Pantella's hotkeys and microphone settings.
+
 # Supported Mods
 - [Tale of Two Wastelands 3.4](https://thebestoftimes.moddinglinked.com/index.html) - Includes character cards and a seperate plugin for TTW support. If you are using TTW, make sure to enable the TTW version of the plugin, not the FNV version and set ttw_enabled to true in the backend when it asks you to during first time setup, or by changing the setting in the falloutnv_config.json file in the configs directory.
 
@@ -48,3 +51,5 @@ If you do not change these settings, the game will cache the voicelines when it 
 H - Adds an NPC to the conversation. Currently only single NPC to player conversations are supported.
 B - Opens the text input menu
 Backspace - Ends all ongoing conversations. Use this if you want to end a conversation early or if an NPC gets stuck in a conversation loop or if the Pantella backend crashes and you want to end the conversation without reloading your save.
+
+These controls are the default controls and can be changed in the MCM menu if you have The Mod Configuration Menu installed.
