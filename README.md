@@ -5,8 +5,6 @@
 
 This repository is for the PantellaNV mod, which handles the FalloutNV-side logic of Pantella. For the main Pantella repository, see [here](https://github.com/Pathos14489/Pantella).
 
-The source code for the subtitles plugin can be found [here](https://github.com/swwu/Mantella-Subtitles-Plugin-NG).
-
 Doesn't currently support behaviors, multiNPC conversations or radiant conversations. Just single NPC to player conversations.
 
 # Required Mods
